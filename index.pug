@@ -1,0 +1,29 @@
+doctype html
+html(lang='en')
+  head
+    title Jade Todo
+    link(rel='stylesheet', href='css/style.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css')
+  body
+    #app
+      .row
+        .col-sm-12
+          h3 Task List
+          form
+            input.form-control(type='text', v-model='newTodo.title', placeholder='Add a new task')
+            button.btn.btn-primary(type='submit', @click.prevent='addTodo(newTodo)') Submit
+      hr
+      .row
+        .col-sm-12
+          h4 Task Lists ( {{todoCount}} )
+          todo-item(:todos='todos')
+          template#todo-items-template
+            ul.list-group(v-if='todos.length > 0')
+              li.list-group-item(v-for='todo in todos', v-bind:class="{'completed': todo.completed}")
+                | {{todo.title}}
+                button.btn.btn-danger.btn-xs.pull-right(@click='deleteTodo(todo)') Delete
+                button.btn.btn-xs.pull-right(v-bind:class="{'btn-success' : todo.completed, 'btn-warning' : !todo.completed}", @click='todoCompleted(todo)') {{ todo.completed ? 'Complete' : 'Pending' }}
+            div(v-else='')
+              p You don't have any tasks
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.28/vue.min.js')
+    script(src='js/index.js')
